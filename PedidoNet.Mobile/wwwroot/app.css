@@ -1,0 +1,493 @@
+h1:focus {
+    outline: none;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+.darker-border-checkbox.form-check-input {
+    border-color: #929292;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.status-bar-safe-area {
+    display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+    .status-bar-safe-area {
+        display: flex;
+        position: sticky;
+        top: 0;
+        height: env(safe-area-inset-top);
+        background-color: #f7f7f7;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .flex-column, .navbar-brand {
+        padding-left: env(safe-area-inset-left);
+    }
+}
+
+/* =========================================================
+   PEDIDONET - estilos compartidos con la app Web
+   (layout, estado de conexión y banner offline)
+   ========================================================= */
+
+:root {
+    --pn-primary: #0b3b73;
+    --pn-primary-dark: #06284f;
+    --pn-accent: #0d6efd;
+    --pn-bg: #f4f7fb;
+    --pn-border: #e2e8f0;
+    --pn-text: #172033;
+    --pn-muted: #64748b;
+    --pn-radius: 14px;
+}
+
+body {
+    margin: 0;
+    background: var(--pn-bg);
+    color: var(--pn-text);
+}
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid var(--pn-border);
+    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+}
+
+.app-header-inner {
+    min-height: 62px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--pn-text);
+    text-decoration: none;
+}
+
+.app-brand-title {
+    font-weight: 800;
+    font-size: 1.1rem;
+    line-height: 1.1;
+}
+
+.app-brand-subtitle {
+    color: var(--pn-muted);
+    font-size: 0.72rem;
+}
+
+.app-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.connection-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+    .connection-status.online {
+        background: #e9f8ef;
+        color: #146c43;
+    }
+
+    .connection-status.offline {
+        background: #fff1f2;
+        color: #b42318;
+    }
+
+.connection-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.offline-banner {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(90deg, #fff7ed, #fffbeb);
+    color: #854d0e;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
+}
+
+.card {
+    border-radius: var(--pn-radius);
+}
+
+.btn-primary {
+    background: var(--pn-primary);
+    border-color: var(--pn-primary);
+}
+
+    .btn-primary:hover {
+        background: var(--pn-primary-dark);
+        border-color: var(--pn-primary-dark);
+    }
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-page {
+    min-height: calc(100vh - 62px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: radial-gradient( circle at top left, rgba(13, 110, 253, 0.12), transparent 35% ), radial-gradient( circle at bottom right, rgba(11, 59, 115, 0.10), transparent 35% ), var(--pn-bg);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    border: 1px solid var(--pn-border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+}
+
+.login-brand {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-logo {
+    width: 66px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border-radius: 18px;
+    background: linear-gradient( 135deg, var(--pn-primary), var(--pn-accent) );
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.login-brand h1 {
+    margin-bottom: 0.3rem;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+.login-brand p {
+    color: var(--pn-muted);
+    font-size: 0.9rem;
+}
+
+/* =========================================================
+   NAVEGACIÓN PRINCIPAL (AppNavMenu - RCL)
+   ========================================================= */
+
+.app-header-inner {
+    position: relative;
+    gap: 1rem;
+}
+
+.app-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+    margin-left: 1.5rem;
+}
+
+.app-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 9px;
+    color: var(--pn-muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+    .app-nav-link:hover,
+    .app-nav-link.active {
+        background: var(--pn-primary-light, #e8f1fb);
+        color: var(--pn-primary);
+    }
+
+.app-nav-toggler {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--pn-border);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--pn-text);
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+@media (max-width: 767.98px) {
+    .app-nav-toggler {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .app-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 105;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
+        padding: 0.75rem 1rem;
+        background: #fff;
+        border-bottom: 1px solid var(--pn-border);
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+        .app-nav.open {
+            display: flex;
+        }
+
+    .app-nav-link {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* =========================================================
+   MENÚ DE USUARIO (UserMenu - RCL)
+   ========================================================= */
+
+.user-menu {
+    position: relative;
+}
+
+.user-menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 220px;
+    padding: 0.2rem 0.75rem 0.2rem 0.2rem;
+    border: 1px solid var(--pn-border);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--pn-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+    .user-menu-trigger:hover {
+        border-color: var(--pn-accent);
+    }
+
+.user-menu-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-avatar {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pn-primary), var(--pn-accent));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.user-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+}
+
+.user-menu-panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    z-index: 120;
+    min-width: 220px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--pn-border);
+    border-radius: 12px;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+}
+
+.user-menu-header {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--pn-border);
+}
+
+.user-menu-item {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 0;
+    background: none;
+    text-align: left;
+    font-weight: 600;
+}
+
+    .user-menu-item:hover:not(:disabled) {
+        background: #f8fafc;
+    }
+
+/* =========================================================
+   TOPBAR MÓVIL
+   - Respaldo por si el WebView reporta safe-area (no duplica:
+     si MAUI ya aplicó el margen, env() vale 0).
+   - Header compacto en pantallas angostas para que marca,
+     menú, estado de red y usuario no se encimen.
+   ========================================================= */
+
+.app-header {
+    padding-top: env(safe-area-inset-top, 0px);
+}
+
+@media (max-width: 575.98px) {
+
+    .app-header-inner {
+        min-height: 56px;
+        gap: 0.5rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .app-brand-title {
+        font-size: 1rem;
+        white-space: nowrap;
+    }
+
+    .app-brand-subtitle {
+        display: none;
+    }
+
+    .app-header-actions {
+        gap: 0.4rem;
+        flex-shrink: 0;
+    }
+
+    .app-nav-toggler {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+    }
+
+    /* Estado de red: solo el punto de color (el texto se oculta) */
+    .connection-status {
+        padding: 0.4rem;
+        font-size: 0;
+        gap: 0;
+    }
+
+        .connection-status .connection-dot {
+            width: 10px;
+            height: 10px;
+        }
+
+    /* El menú desplegable empieza justo debajo del header */
+    .app-nav {
+        top: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .user-menu-name {
+        display: none;
+    }
+
+    .user-menu-trigger {
+        padding: 0.2rem;
+    }
+}

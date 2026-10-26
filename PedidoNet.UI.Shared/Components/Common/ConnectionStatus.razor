@@ -1,0 +1,44 @@
+﻿@using PedidoNet.UI.Shared.Offline
+@implements IDisposable
+@inject IConnectivityService Connectivity
+
+@if (Connectivity.IsOnline)
+{
+    <div class="connection-status online">
+        <span class="connection-dot"></span>
+        Online
+    </div>
+}
+else
+{
+    <div class="connection-status offline">
+        <span class="connection-dot"></span>
+        Offline
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        Connectivity.ConnectivityChanged += OnConnectivityChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Connectivity.InitializeAsync();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void OnConnectivityChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Connectivity.ConnectivityChanged -= OnConnectivityChanged;
+    }
+}

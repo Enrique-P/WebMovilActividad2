@@ -1,0 +1,269 @@
+﻿@using System.Globalization
+@using PedidoNet.UI.Shared.Models.Clientes
+
+@inject ILocationService Location
+
+<EditForm Model="@Model"
+          OnValidSubmit="HandleValidSubmit">
+
+    <DataAnnotationsValidator />
+
+    <FormField Label="Nombre">
+        <InputText class="form-control"
+                   @bind-Value="Model.Nombre" />
+
+        <ValidationMessage For="@(() => Model.Nombre)" />
+    </FormField>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <FormField Label="Cédula"
+                       HelpText="Opcional. No puede repetirse entre clientes.">
+
+                <InputText class="form-control"
+                           @bind-Value="Model.Cedula" />
+
+                <ValidationMessage For="@(() => Model.Cedula)" />
+
+            </FormField>
+        </div>
+
+        <div class="col-md-6">
+            <FormField Label="Teléfono">
+
+                <InputText class="form-control"
+                           type="tel"
+                           @bind-Value="Model.Telefono" />
+
+                <ValidationMessage For="@(() => Model.Telefono)" />
+
+            </FormField>
+        </div>
+
+    </div>
+
+    <FormField Label="Dirección">
+        <InputTextArea class="form-control"
+                       rows="2"
+                       @bind-Value="Model.Direccion" />
+
+        <ValidationMessage For="@(() => Model.Direccion)" />
+    </FormField>
+
+    @* Solo en la app móvil (en Web IsSupported = false; las coordenadas existentes se conservan) *@
+    @if (Location.IsSupported)
+    {
+        <div class="border rounded-3 p-3 mb-3">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-semibold">Ubicación</span>
+
+                @if (Model.TieneUbicacion)
+                {
+                    <button type="button"
+                            class="btn btn-sm btn-link text-danger p-0"
+                            @onclick="QuitarUbicacion">
+                        Quitar
+                    </button>
+                }
+            </div>
+
+            @if (Model.TieneUbicacion)
+            {
+                <div class="small mb-2">
+                    @Coordenada(Model.Latitud), @Coordenada(Model.Longitud)
+
+                    @if (Model.PrecisionMetros.HasValue)
+                    {
+                        <span class="text-secondary"> · ±@Math.Round(Model.PrecisionMetros.Value) m</span>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="small text-secondary mb-2">
+                    Sin ubicación registrada.
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(advertenciaUbicacion))
+            {
+                <div class="small text-warning mb-2">@advertenciaUbicacion</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(errorUbicacion))
+            {
+                <div class="small text-danger mb-2">@errorUbicacion</div>
+            }
+
+            <div class="d-flex flex-wrap gap-2">
+                <button type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        disabled="@obteniendoUbicacion"
+                        @onclick="UsarUbicacionActualAsync">
+                    @(obteniendoUbicacion ? "Obteniendo ubicación..." : "Usar mi ubicación actual")
+                </button>
+
+                @if (Model.TieneUbicacion)
+                {
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            @onclick="VerEnMapaAsync">
+                        Ver en mapa
+                    </button>
+                }
+            </div>
+
+            <ValidationMessage For="@(() => Model.Latitud)" />
+            <ValidationMessage For="@(() => Model.Longitud)" />
+
+        </div>
+    }
+
+    <div class="form-check mb-4">
+        <InputCheckbox class="form-check-input"
+                       id="cliente-consumidor-final"
+                       @bind-Value="Model.EsConsumidorFinal" />
+
+        <label class="form-check-label" for="cliente-consumidor-final">
+            Es consumidor final
+        </label>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+
+        @if (Cancel.HasDelegate)
+        {
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    @onclick="HandleCancel">
+                Cancelar
+            </button>
+        }
+
+        <LoadingButton Type="submit"
+                       isLoading="@IsSaving"
+                       Disabled="@Disabled"
+                       LoadingText="Guardando...">
+
+            @SubmitText
+
+        </LoadingButton>
+
+    </div>
+
+</EditForm>
+
+@code {
+    // Por encima de esta precisión se advierte al usuario (GPS en interiores, red, etc.).
+    private const double PrecisionAceptableMetros = 100;
+
+    private bool obteniendoUbicacion;
+    private string? errorUbicacion;
+    private string? advertenciaUbicacion;
+
+    private static string Coordenada(decimal? valor) =>
+        valor?.ToString("0.000000", CultureInfo.InvariantCulture) ?? string.Empty;
+
+    [Parameter, EditorRequired]
+    public ClienteFormModel Model { get; set; } = new();
+
+    [Parameter]
+    public string SubmitText { get; set; } = "Guardar";
+
+    [Parameter]
+    public bool IsSaving { get; set; }
+
+    /// <summary>Deshabilita el envío (por ejemplo, sin conexión).</summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public EventCallback<ClienteFormModel> OnValidSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback Cancel { get; set; }
+
+    private Task HandleValidSubmit()
+    {
+        return OnValidSubmit.InvokeAsync(Model);
+    }
+
+    private Task HandleCancel()
+    {
+        return Cancel.InvokeAsync();
+    }
+
+    private async Task UsarUbicacionActualAsync()
+    {
+        try
+        {
+            obteniendoUbicacion = true;
+            errorUbicacion = null;
+            advertenciaUbicacion = null;
+
+            var ubicacion = await Location.GetCurrentLocationAsync();
+
+            if (ubicacion is null)
+            {
+                errorUbicacion = "No fue posible obtener la ubicación. Intenta al aire libre o cerca de una ventana.";
+                return;
+            }
+
+            Model.Latitud = Math.Round((decimal)ubicacion.Latitud, 6);
+            Model.Longitud = Math.Round((decimal)ubicacion.Longitud, 6);
+            Model.PrecisionMetros = ubicacion.PrecisionMetros;
+
+            if (ubicacion.EsSimulada)
+            {
+                advertenciaUbicacion = "El dispositivo reporta una ubicación simulada.";
+            }
+            else if (ubicacion.PrecisionMetros > PrecisionAceptableMetros)
+            {
+                advertenciaUbicacion = $"Precisión baja (±{Math.Round(ubicacion.PrecisionMetros.Value)} m). Puedes volver a intentarlo.";
+            }
+        }
+        catch (DeviceFeatureException ex)
+        {
+            errorUbicacion = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            errorUbicacion = $"No fue posible obtener la ubicación. {ex.Message}";
+        }
+        finally
+        {
+            obteniendoUbicacion = false;
+        }
+    }
+
+    private async Task VerEnMapaAsync()
+    {
+        if (!Model.TieneUbicacion)
+            return;
+
+        try
+        {
+            errorUbicacion = null;
+
+            await Location.OpenMapAsync(
+                (double)Model.Latitud!.Value,
+                (double)Model.Longitud!.Value,
+                Model.Nombre);
+        }
+        catch (DeviceFeatureException ex)
+        {
+            errorUbicacion = ex.Message;
+        }
+    }
+
+    private void QuitarUbicacion()
+    {
+        Model.Latitud = null;
+        Model.Longitud = null;
+        Model.PrecisionMetros = null;
+        advertenciaUbicacion = null;
+        errorUbicacion = null;
+    }
+}

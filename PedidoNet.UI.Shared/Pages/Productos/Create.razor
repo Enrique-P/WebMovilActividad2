@@ -1,0 +1,101 @@
+﻿@page "/productos/crear"
+@attribute [Authorize(Roles = "Administrador")]
+
+@using PedidoNet.UI.Shared.Components.Productos
+@using PedidoNet.UI.Shared.Models.Productos
+@using PedidoNet.UI.Shared.Productos
+
+@inject IProductoService ProductoService
+@inject NavigationManager Navigation
+
+<PageTitle>Nuevo producto</PageTitle>
+
+<div class="container-fluid py-4">
+
+    <PageHeader
+        Title="Nuevo producto"
+        Description="Registra un nuevo producto.">
+        <Actions>
+            <a class="btn btn-outline-secondary" href="productos">&larr; Volver a productos</a>
+        </Actions>
+    </PageHeader>
+
+    <AlertMessage
+        Message="@errorMessage"
+        Variant="danger"
+        Dismissible="false" />
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <ProductoForm
+                Model="@model"
+                SubmitText="Crear producto"
+                IsSaving="@isSaving"
+                OnValidSubmit="GuardarAsync"
+                Cancel="Cancelar" />
+
+        </div>
+    </div>
+
+</div>
+
+@code {
+    /// <summary>Código precargado (p. ej. al escanear un código que no existe).</summary>
+    [SupplyParameterFromQuery(Name = "codigo")]
+    public string? CodigoInicial { get; set; }
+
+    private ProductoFormModel model = new();
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrWhiteSpace(CodigoInicial))
+        {
+            model.Codigo = CodigoInicial;
+        }
+    }
+
+    private bool isSaving;
+    private string? errorMessage;
+
+    private async Task GuardarAsync(ProductoFormModel model)
+    {
+        try
+        {
+            isSaving = true;
+            errorMessage = null;
+
+            var request = new CrearProductoRequest
+            {
+                Codigo = model.Codigo,
+                Nombre = model.Nombre,
+                PrecioVenta = model.PrecioVenta,
+                Existencias = model.Existencias,
+                TieneIVA = model.TieneIVA,
+                TieneISC = model.TieneISC
+            };
+
+            // Se guarda localmente y se sincroniza cuando haya conexión.
+            await ProductoService.CrearAsync(request);
+
+            Navigation.NavigateTo("/productos");
+        }
+        catch (HttpRequestException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"No fue posible guardar el producto. {ex.Message}";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private void Cancelar()
+    {
+        Navigation.NavigateTo("/productos");
+    }
+}

@@ -1,0 +1,50 @@
+﻿@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <header class="app-header">
+        <div class="container-fluid app-header-inner">
+
+            @* "/" decide: con sesión válida -> Productos; sin sesión -> Login *@
+            <a class="app-brand" href="">
+                <div class="app-brand-icon">
+                    <img src="pedidoNet-192.png" alt="" />
+                </div>
+                <div>
+                    <div class="app-brand-title">
+                        PedidoNet
+                    </div>
+
+                    <div class="app-brand-subtitle">
+                        Gestión de Pedidos
+                    </div>
+
+                    <AppNavMenu ItemsAdicionales="@ItemsWeb" />
+                </div>
+            </a>
+
+            <AppNavMenu />
+
+            <div class="app-header-actions">
+                <ConnectionStatus />
+                <UserMenu />
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        @Body
+    </main>
+
+    <footer class="app-footer">
+        <div class="container-fluid">
+            PedidoNet &middot; Blazor WebAssembly PWA
+        </div>
+    </footer>
+</div>
+
+@code {
+    private static readonly AppNavMenu.NavItem[] ItemsWeb =
+    [
+        new("Reportes", "reportes/pedidos")
+    ];
+}
